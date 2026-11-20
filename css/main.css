@@ -1,0 +1,151 @@
+:root {
+  --bg-0: #1b1b1b;
+  --bg-1: #232323;
+  --bg-2: #2b2b2b;
+  --bg-3: #353535;
+  --border: #101010;
+  --border-soft: #3d3d3d;
+  --text: #d9d9d9;
+  --text-dim: #8f8f8f;
+  --accent: #4772b3;
+  --accent-hot: #e87d0d;
+  --radius: 4px;
+
+  --topbar-h: 32px;
+  --status-h: 22px;
+  --toolbar-w: 48px;
+  --sidebar-w: 280px;
+  --timeline-h: 140px;
+  --ease: 150ms ease;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg-0);
+  color: var(--text);
+  font: 12px/1.4 Inter, system-ui, "Segoe UI", Roboto, sans-serif;
+}
+
+button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+button:disabled { cursor: not-allowed; }
+
+kbd {
+  background: var(--bg-3);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius);
+  padding: 1px 6px;
+  margin-right: 6px;
+}
+
+/* ===== App grid ===== */
+#app {
+  display: grid;
+  height: 100vh;
+  grid-template-columns: var(--toolbar-w) 1fr var(--sidebar-w);
+  grid-template-rows: var(--topbar-h) 1fr var(--timeline-h) var(--status-h);
+  grid-template-areas:
+    "top   top  top"
+    "tools view side"
+    "tools time side"
+    "stat  stat stat";
+}
+
+/* ===== Top bar ===== */
+#topbar {
+  grid-area: top;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 10px;
+  background: var(--bg-2);
+  border-bottom: 1px solid var(--border);
+  position: relative;
+  z-index: 20;
+}
+
+.brand { display: flex; align-items: center; gap: 8px; font-weight: 600; color: var(--accent-hot); white-space: nowrap; }
+.brand span { color: var(--text); }
+
+.menubar { display: flex; height: 100%; }
+.menu { position: relative; height: 100%; }
+.menu-btn { height: 100%; padding: 0 10px; transition: background var(--ease); }
+.menu-btn:hover, .menu.open .menu-btn { background: var(--bg-3); }
+
+.menu-list {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 210px;
+  padding: 4px;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 0 0 var(--radius) var(--radius);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, .5);
+}
+.menu.open .menu-list { display: block; }
+
+.menu-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  padding: 5px 10px;
+  text-align: left;
+  border-radius: 3px;
+}
+.menu-item:hover:not(:disabled) { background: var(--accent); }
+.menu-item:disabled { opacity: .45; }
+.menu-item .hint { color: var(--text-dim); font-size: 10px; }
+.menu-list hr { border: 0; border-top: 1px solid var(--border-soft); margin: 4px 0; }
+
+.topbar-actions { margin-left: auto; display: flex; gap: 6px; }
+
+.btn {
+  padding: 3px 12px;
+  background: var(--bg-3);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius);
+  transition: background var(--ease);
+}
+.btn:hover:not(:disabled) { background: #444; }
+.btn:disabled { opacity: .45; }
+
+/* ===== Status bar ===== */
+#statusbar {
+  grid-area: stat;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  background: var(--bg-2);
+  border-top: 1px solid var(--border);
+  color: var(--text-dim);
+  font-size: 11px;
+}
+#statusbar strong { color: var(--text); font-weight: 500; }
+.status-right { margin-left: auto; }
+
+/* ===== Responsive layout ===== */
+@media (max-width: 900px) {
+  :root { --sidebar-w: 220px; }
+}
+
+/* Narrow screens: the sidebar moves below the viewport instead of disappearing. */
+@media (max-width: 640px) {
+  :root { --toolbar-w: 44px; }
+  #app {
+    grid-template-columns: var(--toolbar-w) 1fr;
+    grid-template-rows: var(--topbar-h) 1fr 160px 90px var(--status-h);
+    grid-template-areas:
+      "top   top"
+      "tools view"
+      "tools side"
+      "tools time"
+      "stat  stat";
+  }
+  .brand span { display: none; }
+  .topbar-actions { display: none; }
+}

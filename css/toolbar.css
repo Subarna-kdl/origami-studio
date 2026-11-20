@@ -1,0 +1,35 @@
+/* ===== Left toolbar ===== */
+#toolbar {
+  grid-area: tools;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 0;
+  background: var(--bg-2);
+  border-right: 1px solid var(--border);
+}
+
+.tool-btn {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius);
+  color: var(--text);
+  transition: background var(--ease), color var(--ease);
+}
+.tool-btn svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.tool-btn:hover:not(:disabled) { background: var(--bg-3); }
+.tool-btn.active { background: var(--accent); color: #fff; }
+.tool-btn:disabled { opacity: .35; }
+
+.tool-sep { width: 28px; height: 1px; margin: 4px 0; background: var(--border-soft); }
